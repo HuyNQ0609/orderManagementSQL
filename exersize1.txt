@@ -1,0 +1,62 @@
+create database order_management;
+use order_management;
+
+create table Suppliers (
+    supplier_code int primary key,
+    supplier_name varchar(20) not null,
+    address varchar(25) not null
+);
+
+create table SupplierPhones (
+    supplier_code int,
+    supplier_phone varchar(10),
+    primary key (supplier_code, supplier_phone)
+);
+
+create table ExportBills (
+    export_bill_id varchar(20) primary key,
+    export_bill_date datetime
+);
+
+create table Supplies (
+    supplies_code varchar(20) primary key,
+    supplies_name varchar(25)
+);
+
+create table ImportBills (
+    import_bill_id varchar(20) primary key,
+    import_bill_date datetime
+);
+
+create table Orders (
+    order_id varchar(20) primary key,
+    order_date datetime,
+    supplier_code int,
+    foreign key (supplier_code) references Suppliers(supplier_code)
+);
+
+create table ExportBillDetails (
+    export_bill_id varchar(20),
+    supplies_code varchar(20),
+    export_unit_price float,
+    quantity_export int,
+    foreign key (export_bill_id) references ExportBills(export_bill_id),
+    foreign key (supplies_code) references Supplies(supplies_code)
+);
+
+create table ImportBillDetails(
+    import_bill_id varchar(20),
+    supplies_code varchar(20),
+    import_unit_price float,
+    quantity_import int,
+    foreign key (import_bill_id) references ImportBills(import_bill_id),
+    foreign key (supplies_code) references Supplies(supplies_code)
+
+);
+
+create table OrderDetails (
+    order_id varchar(20),
+    supplies_code varchar(20),
+    foreign key (order_id) references Orders (order_id),
+    foreign key (supplies_code) references Supplies(supplies_code)
+);
